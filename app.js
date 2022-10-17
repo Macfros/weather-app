@@ -9,6 +9,8 @@ app.use(bodyParser.urlencoded({extended:true}));
 
 app.use(express.static("public"));
 
+app.set('view engine', 'ejs');
+
 
 app.get("/",function(req,res){
 res.sendFile(__dirname +"\\index.html");
@@ -27,12 +29,9 @@ app.post("/",function(req,res){
       const temp=weather_data.main.temp;
       const icon=weather_data.weather[0].icon;
       const imageURL=" http://openweathermap.org/img/wn/"+ icon +"@2x.png";
+      const description="Temperature of "+_.capitalize(req.body.CityName)+" is "+ temp +" degrees with  "+ des;
 
-
-        res.write("<p>Temperature of "+_.capitalize(req.body.CityName)+" is "+ temp +" degrees with  "+ des+"</p>");
-         res.write("<img src=" + imageURL + ">");
-
-        res.send();
+        res.render("weatherReport", {description: description, imgsrc: imageURL});
 
     })
 
